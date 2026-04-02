@@ -3,7 +3,7 @@ import {Chessboard} from "react-chessboard"
 import { useChess } from '../hooks/useChess';
 
 function ChessBoard() {
-  const {fen,makeMove} = useChess();
+  const {fen , makeMove} = useChess();
 
   const onDrop = ({sourceSquare,targetSquare}) => {
     const res = makeMove({
