@@ -4,7 +4,7 @@ import { calculatePoints } from "../utils/gameHelpers.js";
 import { create } from "zustand";
 import { devtools } from 'zustand/middleware'
 
-const chess = new Chess();
+// const chess = new Chess();
 
 const deriveStatus = (c) => {
   return {
@@ -17,100 +17,130 @@ const deriveStatus = (c) => {
   }
 }
 
-const initialFen = chess.fen();
+// const initialFen = chess.fen();
 
 const useGameStore = create(
   devtools(
-    (set) => ({
-      fen:initialFen,
-      status:deriveStatus(chess),
-      moves:[],
+    (set,get) => {
+      const game = new Chess();
+      return {
+        chess:game,
+        fen:game.fen(),
+        status:deriveStatus(game),
+        moves:[],
 
-      gameId:null,
-      myColor:null,
-      players:null,
+        gameId:null,
+        myColor:null,
+        players:null,
 
-      makeMove: (move) => {
-        let result=null;
-        try{
-          result = chess.move(move);
-        }
-        catch{
-          console.log("Invalid move , error making the move")
-          return false;
-        }
-        if(!result){
-          console.log("Invalid move , result is null")
-          return false;
-        }
-        const newFen=chess.fen();
+        makeMove: (move) => {
+          const chess = get().chess;
+          let result=null;
+          try{
+            result = chess.move(move);
+          }
+          catch{
+            console.log("Invalid move , error making the move")
+            return false;
+          }
+          if(!result){
+            console.log("Invalid move , result is null")
+            return false;
+          }
+          const newFen=chess.fen();
 
-        set( (state) => ({
-          fen:newFen,
-          status:deriveStatus(chess),
-          moves:[
-            ...state.moves,
-            {
-              san:result.san,
-              uci:result.from+result.to,
-              fen:newFen,
-              capturedPiece:result.captured ?? null,
-              timestamp:Date.now(),
+          set( (state) => ({
+            fen:newFen,
+            status:deriveStatus(chess),
+            moves:[
+              ...state.moves,
+              {
+                san:result.san,
+                uci:result.from+result.to,
+                fen:newFen,
+                capturedPiece:result.captured ?? null,
+                timestamp:Date.now(),
+              }
+            ],
+          }) , false , 'makeMove')
+
+          return true;
+        },
+
+        resetGame: () => {
+          const newChess = new Chess();
+
+          set({
+            chess:newChess,
+            fen:newChess.fen(),
+            status:deriveStatus(newChess),
+            moves:[],
+          }, false , 'resetGame');
+        },
+
+        applyRemoteMove: (move) => {
+          const chess = get().chess;
+          try{
+            chess.load(move.fen)
+          }
+          catch{
+            console.log("[gamestore] invalid FEN from server" , move.fen)
+            return;
+          }
+
+          set( (state) => ({
+            fen:move.fen,
+            status:deriveStatus(chess),
+            moves:[...state.moves,move]
+          }), false , 'applyRemoteMove')
+        },
+
+        loadGame: (snapshot) => {
+          const chess = new Chess();
+          chess.load(snapshot.fen);
+          set({
+            chess,
+            fen:snapshot.fen,
+            status:deriveStatus(chess),
+            moves:snapshot.moves,
+            gameId:snapshot.gameId,
+            myColor:snapshot.myColor,
+            players:snapshot.players,
+          } , false , 'loadGame')
+        },
+
+        resignGame: () => {
+          const chess = get().chess;
+          set( (state) => ({
+            status: {...state.status , isGameOver:true , resigned: true}
+          }) , false , 'resignGame')
+        },
+
+        updatePlayerTime: (color,timeLeft) => {
+          const chess = get().chess;
+          set((state) => {
+            if(!state.players) return state
+            const key = color === 'w' ? 'white' : 'black'
+            return{
+              players:{
+                ...state.players,
+                [key]:{ ...state.players[key], timeLeft },
+              },
             }
-          ],
-        }) , false , 'makeMove')
+          }, false , 'updatePlayerTime')
+        },
+        getGameStats: () => {
+          const chess = get().chess;
+          return calculatePoints(chess);
+        },
 
-        return true;
-      },
-
-      resetGame: () => {
-        chess.reset()
-        set({
-          fen:chess.fen(),
-          status:deriveStatus(chess),
-          moves:[]
-        } , false , 'resetGame')
-      },
-
-      applyRemoteMove: (move) => {
-        try{
-          chess.load(move.fen)
-        }
-        catch{
-          console.log("[gamestore] invalid FEN from server" , move.fen)
-          return;
-        }
-
-        set( (state) => ({
-          fen:move.fen,
-          status:deriveStatus(chess),
-          moves:[...state.moves,move]
-        }), false , 'applyRemoteMove')
-      },
-
-      loadGame: (snapshot) => {
-        chess.load(snapshot.fen);
-        set({
-          fen:snapshot.fen,
-          status:deriveStatus(chess),
-          moves:snapshot.moves,
-          gameId:snapshot.gameId,
-          myColor:snapshot.myColor,
-          players:snapshot.players,
-        } , false , 'loadGame')
-      },
-
-      resignGame: () => {
-        set( (state) => ({
-          status: {...state.status , isGameOver:true , resigned: true}
-        }) , false , 'resignGame')
-      },
-
-      setGameId: (id) => set({gameId:id} , false , 'setGameId'),
-      setMyColor:(color)=> set({myColor:color}, false ,'setMyColor'),
-      setPlayers: (players) => set({players} , false , 'setPlayers'),
-    }),
-    {name: 'GameStore'}
+        setGameId: (id) => set({gameId:id} , false , 'setGameId'),
+        setMyColor:(color)=> set({myColor:color}, false ,'setMyColor'),
+        setPlayers: (players) => set({players} , false , 'setPlayers'),
+      }
+      
+    },
+    { name:'GameStore' }
   )
 )
 
@@ -120,7 +150,7 @@ export const useChess = () => {
   const makeMove = useGameStore((s) => s.makeMove)
   const resetGame = useGameStore((s) => s.resetGame)
   const getGameStatus = () => useGameStore.getState().status
-  const getGameStats = () => calculatePoints(chess)
+  const getGameStats = () => useGameStore.getState().getGameStats()
 
   return {
 
@@ -133,4 +163,4 @@ export const useChess = () => {
   }
 };
 
-export {useGameStore , chess}
+export {useGameStore}
