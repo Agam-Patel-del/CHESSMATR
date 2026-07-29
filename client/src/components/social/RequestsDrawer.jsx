@@ -83,7 +83,6 @@ export const RequestsDrawer = ({ isOpen, onClose }) => {
         setPendingRequests((prev) =>
           prev.filter((r) => r.sender.id !== senderId),
         );
-        if (onRequestHandled) onRequestHandled();
       } else {
         addToast(data.error || "Failed to respond", "error");
       }

@@ -234,7 +234,6 @@ router.post("/forgot-password", emailLimiter, async (req, res) => {
     }
 
     const user = await User.findOne({ email: email.toLowerCase() }).select("_id email username");
-
     const successResponse = {
       success: true,
       message: "a reset link has been sent to the registered email",
@@ -246,7 +245,6 @@ router.post("/forgot-password", emailLimiter, async (req, res) => {
 
     const rawToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto.createHash("sha256").update(rawToken).digest("hex");
-
     user.resetPasswordToken = hashedToken;
     user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000);
     await user.save();
