@@ -1,0 +1,87 @@
+:root {
+  --bg-primary: #fdfbf7;
+  --bg-secondary: #f5f1ea;
+  --bg-tertiary: #ebe5db;
+
+  --text-primary: #2d2422;
+  --text-secondary: #5c504d;
+  --text-tertiary: #8c7a76;
+
+  --border-color: #ebe5db;
+  --border-hover: #5c4033;
+
+  --accent-primary: #5c4033;
+  --accent-hover: #4a3329;
+
+  --color-success: #4e6e58;
+  --color-danger: #a35c4e;
+  --color-warning: #c28d4c;
+
+  /* Chessboard Theme Variables */
+  --legal-dot: rgba(70, 50, 35, 0.22);
+  --capture-ring: rgba(55, 40, 28, 0.28);
+  --selected-square: rgba(212, 163, 89, 0.4);
+  --last-move: rgba(212, 163, 89, 0.2);
+  --check-glow: rgba(175, 55, 55, 0.4);
+
+  /* Typography */
+  --font-family-sans: "Inter", "Roboto", "Helvetica Neue", sans-serif;
+
+  /* Spacing & Sizes */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Base Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

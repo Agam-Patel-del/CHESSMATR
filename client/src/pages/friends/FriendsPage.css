@@ -1,0 +1,179 @@
+.friends-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Friends Row List Card */
+.friends-list-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* Friend Row Item */
+.friend-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--bg-secondary);
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.friend-list-row:last-child {
+  border-bottom: none;
+}
+
+.friend-list-row:hover {
+  background-color: var(--bg-primary);
+}
+
+/* Left: Avatar & Identity */
+.friend-row-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.friend-row-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.friend-row-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-family: 'Lora', serif;
+}
+
+.friend-row-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+}
+
+.friend-row-status-dot.online {
+  background-color: #4CAF50;
+}
+
+.friend-row-status-dot.in_game {
+  background-color: var(--color-warning);
+}
+
+.friend-row-status-dot.offline {
+  background-color: #BDBDBD;
+}
+
+.friend-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.friend-row-username {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.friend-list-row:hover .friend-row-username {
+  color: var(--accent-primary);
+}
+
+
+
+/* Right: Actions */
+.friend-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.friend-row-challenge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.775rem;
+  font-weight: 600;
+  font-family: var(--font-family-sans);
+  transition: all 0.2s ease;
+}
+
+.friend-row-challenge-btn:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(92, 64, 51, 0.15);
+}
+
+.friend-row-challenge-btn:disabled {
+  background-color: var(--bg-secondary);
+  color: var(--text-tertiary);
+  border-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+/* Empty State */
+.friends-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-tertiary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.friends-empty-title {
+  font-family: 'Lora', serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.friends-empty-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  max-width: 340px;
+}
+
+.friends-loading-container {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .friend-list-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

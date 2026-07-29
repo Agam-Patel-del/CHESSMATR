@@ -1,12 +1,14 @@
-import React from 'react';
-import ChessBoard from '../features/game/components/ChessBoard';
+import React from "react";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/index.jsx";
+import { AuthProvider } from "../providers/AuthProvider";
 
 function App() {
-  return(
-    <>
-      <ChessBoard/>
-    </>
-  )
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

@@ -1,0 +1,18 @@
+export const PATHS = {
+  HOME: '/',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  FORGOT: '/forgot-password',
+  VERIFY: '/verify-email',
+  RESET: '/reset-password',
+  LOBBY: '/app/lobby',
+  FRIENDS: '/app/friends',
+  HISTORY: '/app/history',
+  GAME: (id) => `/app/game/live/${id}`,
+  GAME_PATTERN: '/app/game/live/:gameId',
+  REVIEW: (id) => `/app/game/review/${id}`,
+  REVIEW_PATTERN: '/app/game/review/:gameId',
+  PROFILE: (id) => `/app/profile/${id}`,
+  PROFILE_PATTERN: '/app/profile/:userId',
+  SETTINGS: '/app/settings',
+};

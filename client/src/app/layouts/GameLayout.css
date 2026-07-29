@@ -1,0 +1,46 @@
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+}
+
+.game-header {
+  height: 56px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+}
+
+.game-brand {
+  font-weight: bold;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.btn-leave {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.btn-leave:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.game-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-md);
+  /* The chessboard takes up as much space as possible here */
+}

@@ -1,0 +1,242 @@
+/* Game History Container & Header */
+.game-history-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color, #EBE5DB);
+  border-radius: var(--border-radius-md, 4px);
+  padding: var(--spacing-xl, 32px);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+}
+
+.game-history-header {
+  margin-bottom: 24px;
+}
+
+.game-history-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.game-history-header h2,
+.game-history-header h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.75rem;
+  color: var(--text-primary, #2D2422);
+  font-weight: 500;
+  margin: 0;
+}
+
+.game-history-header p {
+  font-size: 0.9375rem;
+  color: var(--text-secondary, #5C504D);
+  margin: 0;
+}
+
+.game-history-count {
+  font-weight: 600;
+  color: var(--accent-primary, #5C4033);
+}
+
+/* Filter Tab Bar */
+.game-history-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--bg-secondary, #F5F1EA);
+  padding-bottom: 16px;
+}
+
+.game-history-filter-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border-color, #EBE5DB);
+  border-radius: var(--border-radius-sm, 4px);
+  background-color: #FDFBF7;
+  color: var(--text-secondary, #5C504D);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family-sans, 'Inter', sans-serif);
+}
+
+.game-history-filter-btn:hover:not(.active) {
+  background-color: var(--bg-secondary, #F5F1EA);
+  border-color: var(--accent-primary, #5C4033);
+  color: var(--accent-primary, #5C4033);
+}
+
+.game-history-filter-btn.active {
+  background-color: var(--accent-primary, #5C4033);
+  color: #FFFFFF;
+  border-color: var(--accent-primary, #5C4033);
+  box-shadow: 0 2px 4px rgba(92, 64, 51, 0.15);
+}
+
+/* Table Styling */
+.game-history-table-wrapper {
+  overflow-x: auto;
+}
+
+.game-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.game-history-table th {
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--border-color, #EBE5DB);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary, #8C7A76);
+  font-family: var(--font-family-sans, 'Inter', sans-serif);
+}
+
+.game-history-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--bg-secondary, #F5F1EA);
+  font-size: 0.9375rem;
+  color: var(--text-primary, #2D2422);
+  vertical-align: middle;
+}
+
+.game-history-table tr:hover td {
+  background-color: var(--bg-primary, #FDFBF7);
+}
+
+.opponent-link {
+  color: var(--accent-primary, #5C4033);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.opponent-link:hover {
+  color: var(--accent-hover, #3D2B22);
+  text-decoration: underline;
+}
+
+/* Outcome Badges */
+.history-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.history-badge.win {
+  background-color: #F0F7F4;
+  color: var(--color-success, #2E6F40);
+  border: 1px solid #D3E8DD;
+}
+
+.history-badge.loss {
+  background-color: #FDF3F3;
+  color: var(--color-danger, #C13232);
+  border: 1px solid #F6D6D6;
+}
+
+.history-badge.draw {
+  background-color: var(--bg-secondary, #F5F1EA);
+  color: var(--text-secondary, #5C504D);
+  border: 1px solid var(--border-color, #EBE5DB);
+}
+
+/* Review Button */
+.history-review-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  background-color: #FDFBF7;
+  border: 1px solid var(--border-color, #EBE5DB);
+  border-radius: var(--border-radius-sm, 4px);
+  color: var(--accent-primary, #5C4033);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.history-review-btn:hover {
+  background-color: var(--bg-secondary, #F5F1EA);
+  border-color: var(--accent-primary, #5C4033);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(92, 64, 51, 0.1);
+}
+
+/* Pagination */
+.game-history-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--bg-secondary, #F5F1EA);
+}
+
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination-btn {
+  padding: 8px 14px;
+  background-color: #FDFBF7;
+  border: 1px solid var(--border-color, #EBE5DB);
+  border-radius: var(--border-radius-sm, 4px);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-primary, #5C4033);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-family-sans, 'Inter', sans-serif);
+}
+
+.pagination-btn:hover:not(:disabled):not(.active) {
+  background-color: var(--bg-secondary, #F5F1EA);
+  border-color: var(--accent-primary, #5C4033);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pagination-btn.pagination-page.active {
+  background-color: var(--accent-primary, #5C4033);
+  color: #FFFFFF;
+  border-color: var(--accent-primary, #5C4033);
+}
+
+.pagination-arrow {
+  font-size: 0.8rem;
+}
+
+.pagination-ellipsis {
+  color: var(--text-tertiary, #8C7A76);
+  padding: 0 6px;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+/* State messaging */
+.game-history-loading-state,
+.game-history-empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary, #5C504D);
+  font-size: 0.95rem;
+  font-style: italic;
+}

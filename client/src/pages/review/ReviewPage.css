@@ -1,0 +1,429 @@
+/* ===================== Review Page Layout ===================== */
+.review-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+  align-items: start;
+  animation: reviewFadeIn 0.4s ease-out;
+}
+
+@keyframes reviewFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================== Board Panel ===================== */
+.review-board-panel {
+  background-color: #FFFFFF;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review-player-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 16px;
+  background-color: #F5F1EA;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+}
+
+.review-player-bar.top {
+  margin-bottom: 16px;
+}
+
+.review-player-bar.bottom {
+  margin-top: 16px;
+}
+
+.review-player-timer {
+  font-family: 'Lora', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #8C7A76;
+  background-color: #FDFBF7;
+  padding: 4px 14px;
+  border-radius: 4px;
+  border: 1px solid #EBE5DB;
+  transition: all 0.2s ease;
+  min-width: 76px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  user-select: none;
+}
+
+.review-player-timer.timer-active {
+  color: #5C4033;
+  background-color: #FFFFFF;
+  border-color: #5C4033;
+  box-shadow: 0 2px 5px rgba(92, 64, 51, 0.15);
+  font-weight: 700;
+}
+
+.review-player-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-player-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.review-player-avatar.white-avatar {
+  background-color: #C4B9AA;
+  color: #2D2422;
+}
+
+.review-player-avatar.black-avatar {
+  background-color: #5C4033;
+  color: #FFFFFF;
+}
+
+.review-player-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2D2422;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.review-player-name:hover {
+  color: #5C4033;
+  text-decoration: underline;
+}
+
+.review-player-color-tag {
+  font-size: 0.75rem;
+  color: #8C7A76;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ===================== Board Controls ===================== */
+.review-board-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px;
+  justify-content: center;
+}
+
+.review-nav-btn {
+  flex: 1;
+  max-width: 80px;
+  padding: 10px 0;
+  background-color: #FDFBF7;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #5C4033;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.review-nav-btn:hover:not(:disabled) {
+  background-color: #F5F1EA;
+  border-color: #5C4033;
+  transform: translateY(-1px);
+}
+
+.review-nav-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.review-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ===================== Sidebar Panel ===================== */
+.review-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Game Info Card */
+.review-info-card {
+  background-color: #FFFFFF;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  padding: 24px;
+}
+
+.review-info-card h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  color: #5C4033;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #F5F1EA;
+}
+
+/* Result Banner */
+.review-result-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.review-result-banner.win-result {
+  background-color: #F0F7F4;
+  border: 1px solid #D3E8DD;
+}
+
+.review-result-banner.loss-result {
+  background-color: #FDF3F3;
+  border: 1px solid #F6D6D6;
+}
+
+.review-result-banner.draw-result {
+  background-color: #FDFBF7;
+  border: 1px solid #EBE5DB;
+}
+
+.review-result-icon {
+  font-size: 1.4rem;
+}
+
+.review-result-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2D2422;
+}
+
+.review-result-reason {
+  font-size: 0.8rem;
+  color: #8C7A76;
+  font-weight: 400;
+}
+
+/* Game metadata */
+.review-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.review-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.review-meta-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8C7A76;
+  font-weight: 600;
+}
+
+.review-meta-value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2D2422;
+}
+
+/* ===================== Move List ===================== */
+.review-move-list-card {
+  background-color: #FFFFFF;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  padding: 24px;
+}
+
+.review-move-list-card h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  color: #5C4033;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #F5F1EA;
+}
+
+.review-move-position-label {
+  font-size: 0.8rem;
+  color: #8C7A76;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.review-moves-container {
+  max-height: 340px;
+  overflow-y: auto;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  background-color: #FDFBF7;
+}
+
+.review-moves-grid {
+  display: grid;
+  grid-template-columns: 0.4fr 1fr 1fr;
+  font-size: 0.9rem;
+}
+
+.review-move-number {
+  padding: 6px 8px 6px 12px;
+  color: #8C7A76;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.review-move-cell {
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #2D2422;
+  transition: background-color 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-radius: 2px;
+}
+
+.review-move-time {
+  font-size: 0.68rem;
+  opacity: 0.6;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.review-move-cell.active-move .review-move-time {
+  opacity: 0.85;
+  color: #FFFFFF;
+}
+
+.review-move-cell:hover {
+  background-color: #F0ECE4;
+}
+
+.review-move-cell.active-move {
+  background-color: #5C4033;
+  color: #FFFFFF;
+  border-radius: 3px;
+}
+
+.review-move-cell.empty-cell {
+  cursor: default;
+}
+
+.review-move-cell.empty-cell:hover {
+  background-color: transparent;
+}
+
+/* Even/odd row alternation */
+.review-move-row {
+  display: contents;
+}
+
+.review-move-row:nth-child(even) .review-move-number,
+.review-move-row:nth-child(even) .review-move-cell:not(.active-move) {
+  background-color: #F9F7F3;
+}
+
+/* ===================== Back Button ===================== */
+.review-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background-color: #FFFFFF;
+  border: 1px solid #C4B9AA;
+  border-radius: 4px;
+  color: #5C4033;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.review-back-link:hover {
+  background-color: #F5F1EA;
+  border-color: #5C4033;
+}
+
+/* ===================== Loading & Error States ===================== */
+.review-loading,
+.review-error {
+  text-align: center;
+  padding: 80px 40px;
+  font-size: 1.125rem;
+  color: #5C504D;
+  background-color: #FFFFFF;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.review-error {
+  color: #C13232;
+  background-color: #FDF3F3;
+  border-color: #F6D6D6;
+}
+
+/* ===================== Flip Button ===================== */
+.review-flip-btn {
+  padding: 10px 0;
+  max-width: 80px;
+  flex: 1;
+  background-color: #FDFBF7;
+  border: 1px solid #EBE5DB;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #5C4033;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.review-flip-btn:hover {
+  background-color: #F5F1EA;
+  border-color: #5C4033;
+  transform: translateY(-1px);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 992px) {
+  .review-container {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+}
