@@ -106,9 +106,7 @@ const useGameSocket = () => {
     socket.on("game:clock_sync", handleClockSync);
     socket.on("game:move_error", handleMoveError);
     socket.on("game:opponent_disconnected", handleOpponentDisconnected);
-    socket
-
-      .on("game:opponent_reconnected", handleOpponentReconnected);
+    socket.on("game:opponent_reconnected", handleOpponentReconnected);
     socket.on("game:error", handleGameError);
     socket.on("game:rematch_start", handleRematchStart);
 
