@@ -87,7 +87,7 @@ export const RequestsDrawer = ({ isOpen, onClose }) => {
         addToast(data.error || "Failed to respond", "error");
       }
     } catch {
-      addToast("Connection error", "error");
+      // addToast("Connection error", "error");
     }
   };
 
