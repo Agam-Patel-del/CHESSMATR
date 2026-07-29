@@ -8,7 +8,7 @@ import React, {
 } from "react"
 import { socket } from "../config/socket";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
