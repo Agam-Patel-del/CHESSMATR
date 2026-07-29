@@ -82,7 +82,8 @@ const userSchema = new mongoose.Schema(
 
 export function toPublicProfile(user) {
   if (!user) return null;
-  const id = user._id ? user._id.toString() : user.id ? user.id.toString() : null;
+  const id = user.id ? user.id : user._id ? user._id.toString() : null;
+  if(!id) return null;
   return {
     id,
     username: user.username,

@@ -13,5 +13,6 @@ export default async function connectDB() {
     });
   } catch (err) {
     console.log(`[DB] MONGOOSE CONNECTION FAILED , error : ${err}`);
+    throw err;
   }
 }
