@@ -16,7 +16,7 @@ router.get("/search", authMiddleware, async (req, res) => {
     const matchingUsers = await User.find({
       _id: { $ne: currentUserId },
       username: { $regex: query, $options: "i" }
-    }).select("_id", "username", "stats").limit(10).lean();
+    }).select("_id username stats").limit(10).lean();
 
     const response = matchingUsers.map(toPublicProfile);
     return res.status(200).json(response);
