@@ -202,6 +202,11 @@
   color: #4e6e58;
 }
 
+.dialog-header .avatar-danger {
+  background-color: #f6eae8;
+  color: #a35c4e;
+}
+
 .dialog-header .avatar-default {
   background-color: #faf2e8;
   color: #c28d4c;
@@ -274,6 +279,15 @@
 }
 
 .btn-primary.btn-resign:hover {
+  background-color: #8b4a3e;
+}
+
+.btn-primary.btn-danger {
+  background-color: #a35c4e;
+  color: #ffffff;
+}
+
+.btn-primary.btn-danger:hover {
   background-color: #8b4a3e;
 }
 

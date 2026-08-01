@@ -5,16 +5,20 @@ import { SearchIcon, CrossIcon } from "../common/Icons";
 import "./UserSearchModal.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const LIMIT = 10;
 
 export const UserSearchModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+
   const inputRef = useRef(null);
   const debounceRef = useRef(null);
   const navigate = useNavigate();
-
   const abortControllerRef = useRef(null);
 
   useEffect(() => {
@@ -25,6 +29,10 @@ export const UserSearchModal = ({ isOpen, onClose }) => {
       if (abortControllerRef.current) abortControllerRef.current.abort();
       setQuery("");
       setResults([]);
+      setPage(1);
+      setHasMore(true);
+      setIsLoading(false);
+      setIsFetchingMore(false);
       setHasSearched(false);
     }
   }, [isOpen]);
@@ -38,40 +46,55 @@ export const UserSearchModal = ({ isOpen, onClose }) => {
     return () => document.removeEventListener("keydown", handleKey);
   }, [isOpen, onClose]);
 
-  const searchUsers = async (searchQuery) => {
-    if (!searchQuery.trim()) {
+  const searchUsers = async (searchQuery, pageNum = 1, append = false) => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) {
       setResults([]);
       setHasSearched(false);
+      setHasMore(false);
       return;
     }
 
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
+    if (!append) {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      abortControllerRef.current = new AbortController();
+      setIsLoading(true);
+    } else {
+      setIsFetchingMore(true);
     }
-    abortControllerRef.current = new AbortController();
 
-    setIsLoading(true);
     try {
       const res = await fetch(
-        `${API_BASE}/api/users/search?q=${encodeURIComponent(searchQuery.trim())}`,
+        `${API_BASE}/api/users/search?q=${encodeURIComponent(trimmed)}&page=${pageNum}&limit=${LIMIT}`,
         {
           credentials: "include",
-          signal: abortControllerRef.current.signal,
+          signal: abortControllerRef.current?.signal,
         }
       );
+
       if (res.ok) {
         const data = await res.json();
-        setResults(data);
+        if (append) {
+          setResults((prev) => [...prev, ...data]);
+        } else {
+          setResults(data);
+        }
+        setHasMore(data.length === LIMIT);
       } else {
-        setResults([]);
+        if (!append) setResults([]);
+        setHasMore(false);
       }
     } catch (err) {
       if (err.name !== "AbortError") {
-        setResults([]);
+        if (!append) setResults([]);
+        setHasMore(false);
       }
     } finally {
-      if (!abortControllerRef.current?.signal.aborted) {
+      if (!abortControllerRef.current?.signal?.aborted) {
         setIsLoading(false);
+        setIsFetchingMore(false);
         setHasSearched(true);
       }
     }
@@ -80,12 +103,29 @@ export const UserSearchModal = ({ isOpen, onClose }) => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setQuery(value);
+    setPage(1);
+    setHasMore(true);
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     debounceRef.current = setTimeout(() => {
-      searchUsers(value);
+      searchUsers(value, 1, false);
     }, 300);
+  };
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    if (
+      scrollHeight - scrollTop - clientHeight < 60 &&
+      hasMore &&
+      !isLoading &&
+      !isFetchingMore &&
+      query.trim()
+    ) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      searchUsers(query, nextPage, true);
+    }
   };
 
   const handleUserClick = (userId) => {
@@ -118,8 +158,8 @@ export const UserSearchModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Results */}
-        <div className="search-modal-body">
+        {/* Results Body with Infinite Scroll */}
+        <div className="search-modal-body" onScroll={handleScroll}>
           {isLoading && (
             <div className="search-modal-loading">
               <div className="search-loading-spinner" />
@@ -155,6 +195,13 @@ export const UserSearchModal = ({ isOpen, onClose }) => {
                 </div>
               </div>
             ))}
+
+          {isFetchingMore && (
+            <div className="search-modal-fetching-more">
+              <div className="search-loading-spinner small" />
+              Loading more players...
+            </div>
+          )}
 
           {!isLoading && !hasSearched && (
             <div className="search-modal-empty">

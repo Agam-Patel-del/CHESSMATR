@@ -177,3 +177,40 @@
     gap: 12px;
   }
 }
+
+.friends-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.friends-page-btn {
+  padding: 6px 14px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.friends-page-btn:hover:not(:disabled) {
+  background-color: var(--bg-primary);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.friends-page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.friends-page-info {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}

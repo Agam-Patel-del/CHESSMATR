@@ -78,16 +78,16 @@ export const RequestsDrawer = ({ isOpen, onClose }) => {
           action === "accept"
             ? "Friend request accepted!"
             : "Friend request declined",
-          action === "accept" ? "success" : "info",
+          action === "accept" ? "success" : "info"
         );
         setPendingRequests((prev) =>
-          prev.filter((r) => r.sender.id !== senderId),
+          prev.filter((r) => r.sender?.id !== senderId)
         );
       } else {
         addToast(data.error || "Failed to respond", "error");
       }
     } catch {
-      // addToast("Connection error", "error");
+      addToast("Connection error", "error");
     }
   };
 
@@ -135,17 +135,17 @@ export const RequestsDrawer = ({ isOpen, onClose }) => {
             </div>
           ) : (
             pendingRequests.map((req) => (
-              <div key={req.sender.id} className="request-item-row">
+              <div key={req.sender?.id} className="request-item-row">
                 <div className="request-item-avatar">
-                  {req.sender.username[0].toUpperCase()}
+                  {req.sender?.username?.[0]?.toUpperCase() || "?"}
                 </div>
 
                 <div className="request-item-info">
                   <div
                     className="request-item-username"
-                    onClick={() => handleViewProfile(req.sender.id)}
+                    onClick={() => handleViewProfile(req.sender?.id)}
                   >
-                    {req.sender.username}
+                    {req.sender?.username}
                   </div>
                   <div className="request-item-time">
                     Received {formatTime(req.createdAt)}
@@ -155,14 +155,14 @@ export const RequestsDrawer = ({ isOpen, onClose }) => {
                 <div className="request-item-actions">
                   <button
                     className="request-action-btn accept"
-                    onClick={() => handleRespond(req.sender.id, "accept")}
+                    onClick={() => handleRespond(req.sender?.id, "accept")}
                     title="Accept request"
                   >
                     <CheckIcon size={14} /> Accept
                   </button>
                   <button
                     className="request-action-btn decline"
-                    onClick={() => handleRespond(req.sender.id, "decline")}
+                    onClick={() => handleRespond(req.sender?.id, "decline")}
                     title="Decline request"
                   >
                     <CrossIcon size={14} /> Decline

@@ -3,16 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../app/routes/paths";
 import { usePresence } from "../../hooks/usePresence";
 import { useNotificationStore } from "../../hooks/useNotification";
-import { socket } from "../../config/socket";
 import { LightningIcon } from "../../components/common/Icons";
 import "./FriendsPage.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-
-
 export const FriendsPage = () => {
   const [friends, setFriends] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -25,13 +24,14 @@ export const FriendsPage = () => {
 
     const fetchFriends = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/friends`, {
+        const res = await fetch(`${API_BASE}/api/friends?page=${page}&limit=20`, {
           credentials: "include",
           signal: controller.signal,
         });
         if (res.ok) {
           const data = await res.json();
           setFriends(data.friends || []);
+          setTotalPages(data.totalPages || 1);
         } else {
           addToast("Failed to fetch friends list", "error");
         }
@@ -50,9 +50,10 @@ export const FriendsPage = () => {
     return () => {
       controller.abort();
     };
-  }, [addToast]);
+  }, [page, addToast]);
 
   const getStatus = (friendId) => friendsStatus[friendId] || "offline";
+
   const handleChallenge = (friend) => {
     const status = getStatus(friend.id);
     if (status !== "online") {
@@ -85,8 +86,7 @@ export const FriendsPage = () => {
           <div className="friends-empty-state">
             <div className="friends-empty-title">No friends added yet</div>
             <div className="friends-empty-subtitle">
-              Search for players and send friend requests to start playing
-              together!
+              Search for players and send friend requests to start playing together!
             </div>
           </div>
         ) : (
@@ -116,8 +116,6 @@ export const FriendsPage = () => {
                   </div>
                 </div>
 
-
-
                 {/* Right: Actions */}
                 <div className="friend-row-actions">
                   <button
@@ -142,6 +140,29 @@ export const FriendsPage = () => {
           })
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="friends-pagination">
+          <button
+            className="friends-page-btn"
+            disabled={page <= 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+          >
+            Previous
+          </button>
+          <span className="friends-page-info">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            className="friends-page-btn"
+            disabled={page >= totalPages}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

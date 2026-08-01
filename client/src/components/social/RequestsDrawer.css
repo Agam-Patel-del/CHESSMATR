@@ -232,6 +232,18 @@
   transform: translateY(-1px);
 }
 
+.request-action-btn.view-profile {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.request-action-btn.view-profile:hover {
+  background-color: var(--accent-primary);
+  color: #FFFFFF;
+  border-color: var(--accent-primary);
+}
+
 @media (max-width: 480px) {
   .requests-drawer {
     width: 100%;

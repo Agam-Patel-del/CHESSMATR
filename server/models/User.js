@@ -27,25 +27,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    friends: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    friendRequests: [
-      {
-        sender: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
-      },
-    ],
     OTP: {
       type: String,
     },

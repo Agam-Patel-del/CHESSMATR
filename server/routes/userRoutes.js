@@ -1,5 +1,5 @@
 import express from "express";
-import { User, Game, toPublicProfile } from "../models/index.js";
+import { User, Game, toPublicProfile, areFriends, hasPendingRequest } from "../models/index.js";
 import mongoose from "mongoose";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -7,16 +7,19 @@ const router = express.Router();
 
 router.get("/search", authMiddleware, async (req, res) => {
   try {
-    const query = req.query.q ? req.query.q.trim() : "";
-    if (!query) {
+    const { q, page = 1, limit = 10 } = req.query;
+    if (!q || typeof q !== "string" || !q.trim()) {
       return res.status(200).json([]);
     }
-
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+    const skip = (pageNum - 1) * limitNum;
     const currentUserId = req.user.id;
+
     const matchingUsers = await User.find({
       _id: { $ne: currentUserId },
-      username: { $regex: query, $options: "i" }
-    }).select("_id username stats").limit(10).lean();
+      username: { $regex: q.trim(), $options: "i" },
+    }).select("_id username stats").skip(skip).limit(limitNum).lean();
 
     const response = matchingUsers.map(toPublicProfile);
     return res.status(200).json(response);
@@ -42,9 +45,9 @@ router.put("/profile/username", authMiddleware, async (req, res) => {
       return res.status(400).json({ error: "Username can only contain letters, numbers, and underscores" });
     }
 
-    const existingUser = await User.findOne({ 
-      username: trimmedUsername, 
-      _id: { $ne: req.user.id } 
+    const existingUser = await User.findOne({
+      username: trimmedUsername,
+      _id: { $ne: req.user.id }
     }).select("_id").lean();
     if (existingUser) {
       return res.status(409).json({ error: "Username is already taken" });
@@ -81,10 +84,9 @@ router.get("/:userId/profile", authMiddleware, async (req, res) => {
       return res.status(400).json({ success: false, error: "Invalid user ID" });
     }
 
-    const [targetUser, currentUser] = await Promise.all([
-      User.findById(userId).select("username stats createdAt friendRequests.sender").lean(),
-      User.findById(currentUserId).select("friends friendRequests.sender").lean(),
-    ]);
+    const targetUser = await User.findById(userId)
+      .select("username stats createdAt")
+      .lean();
 
     if (!targetUser) {
       return res.status(404).json({ success: false, error: "User not found" });
@@ -95,17 +97,12 @@ router.get("/:userId/profile", authMiddleware, async (req, res) => {
     let hasSentRequest = false;
     let hasReceivedRequest = false;
 
-    if (currentUserId !== userId && currentUser) {
-      isFriend = (currentUser.friends || []).some(
-        (friendId) => friendId.toString() === userId
-      );
-
-      hasSentRequest = (targetUser.friendRequests || []).some(
-        (reqItem) => reqItem.sender && reqItem.sender.toString() === currentUserId
-      );
-      hasReceivedRequest = (currentUser.friendRequests || []).some(
-        (reqItem) => reqItem.sender && reqItem.sender.toString() === userId
-      );
+    if (currentUserId !== userId) {
+      [isFriend, hasSentRequest, hasReceivedRequest] = await Promise.all([
+        areFriends(currentUserId, userId),
+        hasPendingRequest(currentUserId, userId),
+        hasPendingRequest(userId, currentUserId),
+      ]);
     }
 
     return res.status(200).json({
@@ -217,7 +214,7 @@ router.get("/:userId/games", authMiddleware, async (req, res) => {
         date: new Date(game.createdAt).toLocaleDateString("en-US", {
           month: "short",
           day: "2-digit",
-          year: "numeric", 
+          year: "numeric",
         }),
       };
     });

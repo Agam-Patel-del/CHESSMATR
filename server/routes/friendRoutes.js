@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
-import { User, toPublicProfile } from "../models/index.js";
+import {
+  User,Friendship, toPublicProfile, areFriends, getFriendIds, createFriendship, removeFriendship, hasPendingRequest, createRequest, respondToRequest, getPendingReceived, getPendingSent
+} from "../models/index.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -18,29 +20,32 @@ router.post("/request/:targetUserId", async (req, res) => {
       return res.status(400).json({ success: false, error: "You cannot add yourself as a friend" });
     }
 
-    const targetUser = await User.findById(targetUserId).select("friends friendRequests.sender").lean();
+    const targetUser = await User.exists({ _id: targetUserId });
     if (!targetUser) {
       return res.status(404).json({ success: false, error: "Target user not found" });
     }
 
-    const isAlreadyFriend = (targetUser.friends || []).some(
-      (friendId) => friendId.toString() === currentUserId
-    );
+    const isAlreadyFriend = await areFriends(currentUserId, targetUserId);
     if (isAlreadyFriend) {
       return res.status(400).json({ success: false, error: "User is already in your friends list" });
     }
 
-    const isAlreadyRequested = (targetUser.friendRequests || []).some(
-      (reqItem) => reqItem.sender && reqItem.sender.toString() === currentUserId
-    );
-    if (isAlreadyRequested) {
+    const [alreadySent, alreadyReceived] = await Promise.all([
+      hasPendingRequest(currentUserId, targetUserId),
+      hasPendingRequest(targetUserId, currentUserId),
+    ]);
+
+    if (alreadySent) {
       return res.status(400).json({ success: false, error: "Friend request already sent" });
     }
+    if (alreadyReceived) {
+      return res.status(400).json({
+        success: false,
+        error: "This user has already sent you a friend request",
+      });
+    }
 
-    await User.findByIdAndUpdate(targetUserId, {
-      $push: { friendRequests: { sender: currentUserId, createdAt: new Date() } },
-    });
-
+    await createRequest(currentUserId, targetUserId);
     return res.status(200).json({
       success: true,
       message: "Friend request sent successfully",
@@ -63,39 +68,20 @@ router.post("/respond", async (req, res) => {
       return res.status(400).json({ success: false, error: "Action must be 'accept' or 'decline'" });
     }
 
+    const updatedRequest = await respondToRequest(currentUserId, senderId);
+
+    if (!updatedRequest) {
+      return res.status(404).json({ success: false, error: "Friend request not found" });
+    }
+
     if (action === "accept") {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: currentUserId, "friendRequests.sender": senderId },
-        {
-          $addToSet: { friends: senderId },
-          $pull: { friendRequests: { sender: senderId } },
-        }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).json({ success: false, error: "Friend request not found" });
-      }
-
-      await User.findByIdAndUpdate(senderId, {
-        $addToSet: { friends: currentUserId },
-      });
+      await createFriendship(currentUserId, senderId);
 
       return res.status(200).json({
         success: true,
         message: "Friend request accepted",
       });
     } else {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: currentUserId, "friendRequests.sender": senderId },
-        {
-          $pull: { friendRequests: { sender: senderId } },
-        }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).json({ success: false, error: "Friend request not found" });
-      }
-
       return res.status(200).json({
         success: true,
         message: "Friend request declined",
@@ -110,21 +96,21 @@ router.post("/respond", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const currentUserId = req.user.id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
 
-    const user = await User.findById(currentUserId)
-      .select("friends")
-      .populate("friends", "username stats")
-      .lean();
+    const { friendIds, total } = await getFriendIds(currentUserId, { page, limit });
+    const friendUsers = await User.find({ _id: { $in: friendIds } }).select("username stats createdAt").lean();
 
-    if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
-    }
-
-    const friends = (user.friends || []).map(toPublicProfile);
+    const friends = friendUsers.map(toPublicProfile);
+    const totalPages = Math.ceil(total / limit);
 
     return res.status(200).json({
       success: true,
       friends,
+      totalPages,
+      currentPage: page,
+      totalFriends: total,
     });
   } catch (err) {
     console.error(`[Friends] Get friends error: ${err}`);
@@ -135,27 +121,26 @@ router.get("/", async (req, res) => {
 router.get("/requests", async (req, res) => {
   try {
     const currentUserId = req.user.id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
 
-    const user = await User.findById(currentUserId)
-      .select({ friendRequests: { $slice: -15 } })
-      .populate("friendRequests.sender", "username stats")
-      .lean();
+    const { requests, total } = await getPendingReceived(currentUserId, { page, limit });
 
-    if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
-    }
-
-    const pendingRequests = (user.friendRequests || [])
+    const pendingRequests = requests
       .filter((reqItem) => reqItem.sender)
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .map((reqItem) => ({
         sender: toPublicProfile(reqItem.sender),
         createdAt: reqItem.createdAt,
       }));
 
+    const totalPages = Math.ceil(total / limit);
+
     return res.status(200).json({
       success: true,
       pendingRequests,
+      totalPages,
+      currentPage: page,
+      totalRequests: total,
     });
   } catch (err) {
     console.error(`[Friends] Get pending requests error: ${err}`);
@@ -171,10 +156,7 @@ router.delete("/:friendId", async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(friendId)) {
       return res.status(400).json({ success: false, error: "Invalid friend ID" });
     }
-    await Promise.all([
-      User.findByIdAndUpdate(currentUserId, { $pull: { friends: friendId } }),
-      User.findByIdAndUpdate(friendId, { $pull: { friends: currentUserId } }),
-    ]);
+    await removeFriendship(currentUserId, friendId);
 
     return res.status(200).json({
       success: true,

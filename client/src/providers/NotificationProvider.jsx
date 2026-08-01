@@ -230,6 +230,8 @@ export const NotificationProvider = ({ children }) => {
         return "🔄";
       case "draw":
         return "🤝";
+      case "danger":
+        return "⚠️";
       default:
         return "❓";
     }

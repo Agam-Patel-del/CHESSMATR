@@ -2,7 +2,7 @@ import { presenceManager } from "../services/presenceManager.js";
 import { gameManager } from "../services/GameManager.js";
 import { timerManager } from "../services/TimerManager.js";
 import { broadcastPresenceToFriends } from "./presenceHandler.js";
-import { User } from "../models/index.js";
+import { User, areFriends } from "../models/index.js";
 
 const activeChallenges = new Map();
 
@@ -17,10 +17,7 @@ export function registerChallengeHandlers(socket, io) {
         return socket.emit("challenge:error", { message: "You cannot challenge yourself." });
       }
 
-      const user = await User.findById(userId).select("friends").lean();
-      const isFriend = user?.friends?.some(
-        (friendObjectId) => friendObjectId.toString() === toUserId.toString()
-      );
+      const isFriend = await areFriends(userId, toUserId);
       if (!isFriend) {
         return socket.emit("challenge:error", { message: "Only friends can be challenged." });
       }
