@@ -7,12 +7,12 @@ const router = express.Router();
 
 router.get("/search", authMiddleware, async (req, res) => {
   try {
-    const { q, page = 1, limit = 10 } = req.query;
+    const { q, page = 1, limit = 5 } = req.query;
     if (!q || typeof q !== "string" || !q.trim()) {
       return res.status(200).json([]);
     }
     const pageNum = parseInt(page) || 1;
-    const limitNum = parseInt(limit) || 10;
+    const limitNum = parseInt(limit) || 5;
     const skip = (pageNum - 1) * limitNum;
     const currentUserId = req.user.id;
 

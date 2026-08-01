@@ -36,8 +36,8 @@ router.post("/register", emailLimiter, async (req, res) => {
     if (!username || !email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
-    if(username.length < 3 || username.length > 20 || !(/^[a-zA-Z0-9_]+$/.test(username))) {
-      return res.status(400).json({ error: "username must be 3 to 20 characters (letters, numbers, underscores only)"});
+    if (username.length < 3 || username.length > 20 || !(/^[a-zA-Z0-9_]+$/.test(username))) {
+      return res.status(400).json({ error: "username must be 3 to 20 characters (letters, numbers, underscores only)" });
     }
     if (password.length < 6) {
       return res.status(400).json({ error: "Password must be at least 6 characters" });
@@ -45,8 +45,8 @@ router.post("/register", emailLimiter, async (req, res) => {
 
     const existingEmail = await User.findOne({ email: email.toLowerCase() });
     if (existingEmail) {
-        return res.status(409).json({ error: "Email is already registered" });
-      }
+      return res.status(409).json({ error: "Email is already registered" });
+    }
 
     const existingUsername = await User.findOne({ username });
     if (existingUsername) {
@@ -281,6 +281,11 @@ router.post("/reset-password", authLimiter, async (req, res) => {
 
     if (!user) {
       return res.status(400).json({ error: "Invalid or expired password reset link" });
+    }
+
+    const isSamePassword = await bcrypt.compare(password, user.passwordHash);
+    if (isSamePassword) {
+      return res.status(400).json({ error: "New password must be different from previous one" });
     }
 
     user.passwordHash = await bcrypt.hash(password, 12);

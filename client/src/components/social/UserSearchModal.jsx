@@ -5,7 +5,7 @@ import { SearchIcon, CrossIcon } from "../common/Icons";
 import "./UserSearchModal.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
-const LIMIT = 10;
+const LIMIT = 5;
 
 export const UserSearchModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
