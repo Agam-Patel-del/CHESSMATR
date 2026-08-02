@@ -7,13 +7,13 @@ const router = express.Router();
 
 router.get("/search", authMiddleware, async (req, res) => {
   try {
-    const { q, page = 1, limit = 5 } = req.query;
+    const { q, page = 1, limit = 10 } = req.query;
     if (!q || typeof q !== "string" || !q.trim()) {
       return res.status(200).json([]);
     }
     const pageNum = parseInt(page) || 1;
-    const limitNum = parseInt(limit) || 5;
-    const skip = (pageNum - 1) * limitNum;
+    const limitNum = parseInt(limit) || 10;
+    let skip = (pageNum - 1) * limitNum;
     const currentUserId = req.user.id;
 
     const matchingUsers = await User.find({
@@ -225,7 +225,7 @@ router.get("/:userId/games", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/game/:gameId", async (req, res) => {
+router.get("/game/:gameId", authMiddleware, async (req, res) => {
   try {
     const gameId = req.params.gameId;
     if (!mongoose.Types.ObjectId.isValid(gameId)) {

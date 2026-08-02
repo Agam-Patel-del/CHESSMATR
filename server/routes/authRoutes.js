@@ -6,7 +6,6 @@ import { User, toPublicProfile } from "../models/index.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { sendVerificationEmail, sendResetPasswordEmail } from "../services/emailService.js";
 import { authLimiter, emailLimiter } from "../middleware/rateLimiter.js";
-import { error } from "console";
 
 const router = express.Router();
 
