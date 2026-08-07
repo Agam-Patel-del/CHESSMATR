@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import http from "http";
+import helmet from "helmet";
 import { Server } from "socket.io";
 import { registerSocketHandlers } from "./socket/index.js";
 import connectDB from "./config/db.js";
@@ -13,15 +14,18 @@ import dns from "node:dns/promises";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
-dotenv.config();
+dotenv.config({ quiet: true });
 const PORT = process.env.PORT || 5000;
 const frontendURL = process.env.FRONTEND_URL || "http://localhost:3000";
 const app = express();
 
 app.set("trust proxy", 1);
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
 
 app.use(
@@ -77,8 +81,13 @@ app.use((req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err);
+
+  const message = process.env.NODE_ENV === "production"
+    ? "Internal Server Error"
+    : err.message || "Internal Server Error";
+
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    message,
   });
 });

@@ -24,7 +24,7 @@ function generateToken(user) {
       tokenVersion: user.tokenVersion
     },
     process.env.JWT_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: process.env.TOKEN_EXPIRY || "7d" }
   );
 }
 
@@ -224,7 +224,8 @@ router.post("/resend-verification", emailLimiter, async (req, res) => {
     res.status(500).json({ error: "Resend failed. Please try again." });
   }
 });
-router.post("/forgot-password", emailLimiter, async (req, res) => {
+
+router.post("/forgot-password", emailLimiter,  async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -232,7 +233,7 @@ router.post("/forgot-password", emailLimiter, async (req, res) => {
       return res.status(400).json({ error: "Email is required" });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() }).select("_id email username");
+    const user = await User.findOne({ email: email.trim().toLowerCase() }).select("_id email username");
     const successResponse = {
       success: true,
       message: "a reset link has been sent to the registered email",
