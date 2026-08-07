@@ -9,7 +9,7 @@
 
 # 🌐 Live Demo
 
-🚀 **Try ChessMatr here:** 👉 https://chessmatr.vercel.app/
+**Try ChessMatr here:** https://chessmatr.vercel.app/
 
 ---
 
@@ -128,4 +128,3 @@ npm run dev
 - Frontend is running on: `http://localhost:3000`
 
 ---
-
