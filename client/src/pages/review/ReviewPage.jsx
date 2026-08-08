@@ -174,9 +174,9 @@ export const ReviewPage = () => {
       },
       black: blackMove
         ? {
-            san: blackMove.san,
-            index: i + 1,
-          }
+              san: blackMove.san,
+              index: i + 1,
+            }
         : null,
     });
   }
@@ -392,11 +392,16 @@ export const ReviewPage = () => {
             </Link>
           </div>
 
-          <div className={`review-result-banner ${resultClass}`}>
-            <span className="review-result-icon">{resultIcon}</span>
-            <div>
-              <div className="review-result-text">{resultText}</div>
-              <div className="review-result-reason">{reasonLabel}</div>
+          <div className={`review-result-banner ${resultClass}`} style={{ justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span className="review-result-icon">{resultIcon}</span>
+              <div>
+                <div className="review-result-text">{resultText}</div>
+                <div className="review-result-reason">{reasonLabel}</div>
+              </div>
+            </div>
+            <div style={{ textAlign: "right", color: "var(--text-secondary, #8C7A76)", fontSize: "0.85rem", fontWeight: "500" }}>
+              {dateLabel}
             </div>
           </div>
 
@@ -408,10 +413,6 @@ export const ReviewPage = () => {
             <div className="review-meta-item">
               <span className="review-meta-label">Total Moves</span>
               <span className="review-meta-value">{totalMoves}</span>
-            </div>
-            <div className="review-meta-item">
-              <span className="review-meta-label">Date Played</span>
-              <span className="review-meta-value">{dateLabel}</span>
             </div>
           </div>
         </div>
