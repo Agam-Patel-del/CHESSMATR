@@ -16,10 +16,12 @@
 # ⚡ Features
 
 - ♟️ **Live Multiplayer Chess**: Real-time board synchronization and move validation.
+- 🎮 **Custom Games**: Custom games between friends.
 - 👥 **Friend Management System**: Search for users, send requests, and manage your network.
 - ⚡ **Socket.IO Integration**: Instantaneous gameplay and real-time status updates.
 - 🔐 **Secure Authentication**: JWT sessions, bcrypt hashing, and OTP-based email verification.
 - 📊 **Stat Tracking**: Automated tracking of your wins, losses, draws, and total games.
+- 📜 **Game History**: Games history tracking features.
 - 🛡️ **Robust Security**: Rate limiting, Helmet HTTP headers, and strict payload controls.
 
 ---
