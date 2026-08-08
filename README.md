@@ -69,21 +69,29 @@
 
 ---
 
-# 🚀 Setup Instructions
+# 🚀 Getting Started
 
-## 1. Clone the repository
+Follow these steps to get a local instance of ChessMatr up and running on your machine.
+
+### Prerequisites
+Make sure you have Node.js and npm installed.
+
+### 1. Grab the Code
+Clone the repository to your local machine and navigate into the project directory:
 ```bash
 git clone https://github.com/your-username/chessmatr.git
 cd chessmatr
 ```
 
-## 2. Setup Backend
+### 2. Configure the Backend
+Navigate to the server directory and install the required dependencies:
 ```bash
 cd server
 npm install
 ```
 
-Create a `.env` file in the `/server` directory:Put the necessary credentials from your side , a sample of it is provided , for smtp server credentails , if you don't have one, use it in Development Mail Fallback mode , where you have to not provide atleast one of `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` and the eseential OTPs and Reset Password Links will be logged on server terminal.
+Next, create a `.env` file in the `/server` folder. You can use the template below. Make sure to provide your MongoDB URI and JWT secret. 
+*Note: If you are running locally and don't want to configure an SMTP server, you can leave out one of the SMTP variables (`SMTP_HOST`, `SMTP_USER`, or `SMTP_PASS`). The app will enter "Development Mail Fallback" mode, printing necessary OTPs and password reset links directly to your server console instead of emailing them.*
 
 ```env
 
@@ -103,30 +111,32 @@ SMTP_FROM_NAME=ChessMatr
 
 ```
 
-Run the backend development server:
+Start the backend server:
 ```bash
 npm run dev
 ```
 
-## 3. Setup Frontend
-Open a new terminal window:
+### 3. Configure the Frontend
+Open a separate terminal instance, navigate to the client folder, and install dependencies:
 ```bash
 cd client
 npm install
 ```
 
-Create a `.env` file in the `/client` directory:
+Create a `.env` file in the `/client` folder with the following:
 ```env
+
 VITE_API_BASE_URL=http://localhost:5000
+
 ```
 
-Run the frontend development server:
+Start the React development:
 ```bash
 npm run dev
 ```
 
-## 4. Run Full App
-- Backend is running on: `http://localhost:5000`
-- Frontend is running on: `http://localhost:3000`
+### 4. You're All Set!
+- The backend API is listening at: `http://localhost:5000`
+- The frontend UI is available at: `http://localhost:3000`
 
 ---
