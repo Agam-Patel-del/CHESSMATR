@@ -125,12 +125,10 @@ npm install
 
 Create a `.env` file in the `/client` folder with the following:
 ```env
-
 VITE_API_BASE_URL=http://localhost:5000
-
 ```
 
-Start the React development:
+Start the frontend:
 ```bash
 npm run dev
 ```

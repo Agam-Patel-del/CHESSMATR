@@ -7,6 +7,7 @@
   gap: 32px;
   align-items: start;
   animation: reviewFadeIn 0.4s ease-out;
+  zoom: 0.88;
 }
 
 @keyframes reviewFadeIn {
@@ -164,7 +165,7 @@
 .review-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 /* Game Info Card */
@@ -172,15 +173,15 @@
   background-color: #FFFFFF;
   border: 1px solid #EBE5DB;
   border-radius: 4px;
-  padding: 24px;
+  padding: 16px;
 }
 
 .review-info-card h3 {
   font-family: 'Lora', serif;
   font-size: 1.2rem;
   color: #5C4033;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
   border-bottom: 1px solid #F5F1EA;
 }
 
@@ -189,9 +190,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 8px 12px;
   border-radius: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .review-result-banner.win-result {
@@ -229,8 +230,8 @@
 .review-meta-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .review-meta-item {
@@ -258,15 +259,15 @@
   background-color: #FFFFFF;
   border: 1px solid #EBE5DB;
   border-radius: 4px;
-  padding: 24px;
+  padding: 16px;
 }
 
 .review-move-list-card h3 {
   font-family: 'Lora', serif;
   font-size: 1.2rem;
   color: #5C4033;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
   border-bottom: 1px solid #F5F1EA;
 }
 
