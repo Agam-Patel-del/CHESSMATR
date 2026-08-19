@@ -28,6 +28,7 @@ const useGameStore = create(
       players: null,
       opponentOnline: true,
       clocks: { white: 0, black: 0 },
+      premoves: [],
 
       makeMove: (move) => {
         const chess = get().chess;
@@ -90,6 +91,18 @@ const useGameStore = create(
           fen: move.fen,
           status: deriveStatus(chess),
           moves: [...state.moves, move]
+        }))
+      },
+
+      preMove: (premove) => {
+        set((state) => ({
+          premoves: [...state.premoves, premove]
+        }))
+      },
+
+      clearPreMoves: () => {
+        set(() => ({
+          premoves: []
         }))
       },
 
@@ -160,6 +173,7 @@ const useGameStore = create(
           players: null,
           opponentOnline: true,
           clocks: { white: 0, black: 0 },
+          premoves: []
         });
       },
     }
@@ -177,6 +191,9 @@ export const useChess = () => {
   const gameId = useGameStore((s) => s.gameId)
   const myColor = useGameStore((s) => s.myColor)
   const players = useGameStore((s) => s.players)
+  const preMove = useGameStore((s) => s.preMove)
+  const premoves = useGameStore((s) => s.premoves)
+  const clearPreMoves = useGameStore((s) => s.clearPreMoves)
 
   return {
     fen,
@@ -188,6 +205,9 @@ export const useChess = () => {
     gameId,
     myColor,
     players,
+    premoves,
+    preMove,
+    clearPreMoves
   }
 };
 

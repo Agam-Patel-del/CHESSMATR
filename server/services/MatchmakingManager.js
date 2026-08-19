@@ -19,7 +19,7 @@ class MatchmakingManager {
     }
 
     const queueKey = getQueueKey(timeControl.base, timeControl.increment);
-    this.removePlayerFromQueue(playerId, queueKey);
+    this.leaveQueue(playerId, queueKey);
     this.playerSockets.set(playerId, socketId);
 
     if (!this.queues.has(queueKey)) {
@@ -45,7 +45,7 @@ class MatchmakingManager {
     return { success: true, queueKey };
   }
 
-  removePlayerFromQueue(playerId, queueKey) {
+  leaveQueue(playerId, queueKey) {
     const queue = this.queues.get(queueKey);
     if (queue) {
       const idx = queue.findIndex(p => p.playerId === playerId);
@@ -65,6 +65,8 @@ class MatchmakingManager {
         this.playerSockets.delete(playerId);
       }
     }
+
+    console.log(`[MatchmakingManager] leaveQueue() removed playerId ${playerId.substring(0, 8)} from queue: ${queueKey}`);
   }
 
   leaveAll(playerId) {
@@ -93,10 +95,7 @@ class MatchmakingManager {
     return removedKeys;
   }
 
-  leaveQueue(playerId, queueKey) {
-    this.removePlayerFromQueue(playerId, queueKey);
-    console.log(`[MatchmakingManager] leaveQueue() removed playerId ${playerId.substring(0, 8)} from queue: ${queueKey}`);
-  }
+
 
   leave(socketId) {
     for (const [playerId, sid] of this.playerSockets.entries()) {

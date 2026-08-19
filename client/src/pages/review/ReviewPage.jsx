@@ -174,9 +174,9 @@ export const ReviewPage = () => {
       },
       black: blackMove
         ? {
-              san: blackMove.san,
-              index: i + 1,
-            }
+            san: blackMove.san,
+            index: i + 1,
+          }
         : null,
     });
   }
@@ -374,7 +374,14 @@ export const ReviewPage = () => {
       <div className="review-sidebar">
         {/* Result & Info card */}
         <div className="review-info-card">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "12px",
+            }}
+          >
             <h3 style={{ margin: 0 }}>Game Summary</h3>
             <Link
               to={PATHS.SETTINGS}
@@ -392,7 +399,10 @@ export const ReviewPage = () => {
             </Link>
           </div>
 
-          <div className={`review-result-banner ${resultClass}`} style={{ justifyContent: "space-between" }}>
+          <div
+            className={`review-result-banner ${resultClass}`}
+            style={{ justifyContent: "space-between" }}
+          >
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <span className="review-result-icon">{resultIcon}</span>
               <div>
@@ -400,7 +410,14 @@ export const ReviewPage = () => {
                 <div className="review-result-reason">{reasonLabel}</div>
               </div>
             </div>
-            <div style={{ textAlign: "right", color: "var(--text-secondary, #8C7A76)", fontSize: "0.85rem", fontWeight: "500" }}>
+            <div
+              style={{
+                textAlign: "right",
+                color: "var(--text-secondary, #8C7A76)",
+                fontSize: "0.85rem",
+                fontWeight: "500",
+              }}
+            >
               {dateLabel}
             </div>
           </div>
