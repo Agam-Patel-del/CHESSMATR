@@ -137,7 +137,7 @@ export const LobbyPage = () => {
       {/* ---- Header ---- */}
       <header className="lobby-welcome-banner">
         <div className="lobby-welcome-text">
-          <h2>Welcome, {user?.username}</h2>
+          <h1>Welcome, <span>{user?.username}</span></h1>
         </div>
       </header>
 
@@ -145,7 +145,7 @@ export const LobbyPage = () => {
       {CATEGORIES.map((category) => (
         <section className="lobby-section" key={category}>
           <div className="section-header">
-            <h3 className="lobby-section-title">{category}</h3>
+            <h2 className="lobby-section-title">{category}</h2>
           </div>
           <div className="quick-play-grid">
             {TIME_CONTROLS.filter((tc) => tc.category === category).map(
@@ -167,7 +167,7 @@ export const LobbyPage = () => {
                         </span>
                       )}
                     </div>
-                    <h4 className="quick-play-name">{tc.category}</h4>
+
                     {isQueued && (
                       <p className="queue-cancel-hint">Click to cancel</p>
                     )}

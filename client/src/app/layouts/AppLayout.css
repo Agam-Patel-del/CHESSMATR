@@ -51,7 +51,7 @@
 .nav-link.active {
   background-color: #FFFFFF;
   color: #5C4033;
-  border-right: 3px solid #5C4033;
+  border-left: 3px solid #5C4033;
 }
 
 .app-content-wrapper {
@@ -109,7 +109,7 @@
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
 }
 
 .app-main {
