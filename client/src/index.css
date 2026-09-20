@@ -44,6 +44,21 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg:
     0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Selection Colors */
+  --selection-bg: #e8d7be;
+  --selection-text: #2d2422;
+}
+
+/* Global Text Selection */
+::selection {
+  background-color: var(--selection-bg, #e8d7be);
+  color: var(--selection-text, #2d2422);
+}
+
+::-moz-selection {
+  background-color: var(--selection-bg, #e8d7be);
+  color: var(--selection-text, #2d2422);
 }
 
 /* Base Reset */
