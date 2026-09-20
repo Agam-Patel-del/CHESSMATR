@@ -106,23 +106,32 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 14px;
-  background-color: #FDFBF7;
-  border: 1px solid #EBE5DB;
-  border-radius: 4px;
-  color: #5C4033;
-  font-size: 0.8rem;
-  font-weight: 600;
+  padding: 4px 10px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-sm, 4px);
+  color: var(--text-secondary, #5C504D);
+  font-size: 0.8125rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease-in-out;
   white-space: nowrap;
 }
 
 .history-review-btn:hover {
-  background-color: #F5F1EA;
-  border-color: #5C4033;
+  background-color: var(--bg-tertiary, #EBE5DB);
+  border-color: var(--accent-primary, #5C4033);
+  color: var(--accent-primary, #5C4033);
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(92, 64, 51, 0.1);
+}
+
+.history-review-btn:focus-visible {
+  outline: 2px solid var(--accent-primary, #5C4033);
+  outline-offset: 2px;
+  color: var(--accent-primary, #5C4033);
+  background-color: var(--bg-secondary, #F5F1EA);
+  border-color: var(--border-color, #EBE5DB);
 }
 
 /* ===================== Pagination ===================== */

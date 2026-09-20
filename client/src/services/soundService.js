@@ -1,7 +1,6 @@
 class SoundService {
   constructor() {
     this.isMuted = localStorage.getItem("chessmatr_muted") === "true";
-
     this.sounds = {
       move: new Audio("/sounds/move.mp3"),
       capture: new Audio("/sounds/capture.mp3"),
@@ -9,10 +8,6 @@ class SoundService {
       gameOver: new Audio("/sounds/confirmation.mp3"),
       error: new Audio("/sounds/lowtime.mp3"),
     };
-
-    Object.values(this.sounds).forEach((audio) => {
-      audio.volume = 0.8;
-    });
   }
 
   toggleMute() {
@@ -32,7 +27,7 @@ class SoundService {
     if (audio) {
       try {
         audio.currentTime = 0;
-        audio.play().catch(() => {});
+        audio.play().catch((e) => console.warn(`[Sound] Error playing ${name}:`, e));
       } catch (e) {
         console.warn(`[Sound] Error playing ${name}:`, e);
       }
