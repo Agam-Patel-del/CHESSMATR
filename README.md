@@ -1,32 +1,32 @@
 <div>
 
-# ♟️ ChessMatr
+#  ChessMatr
 > ChessMatr is a real-time multiplayer chess platform built on the MERN stack with Socket.IO. It goes beyond simple gameplay by offering a complete social experience — allowing users to securely register, search for friends, manage requests, and instantly challenge them to live chess matches with zero latency.
 
 </div>
 
 ---
 
-# 🌐 Live Demo
+#  Live Demo
 
 **Try ChessMatr here:** https://chessmatr.vercel.app/
 
 ---
 
-# ⚡ Features
+#  Features
 
-- ♟️ **Live Multiplayer Chess**: Real-time board synchronization and move validation.
-- 🎮 **Custom Games**: Custom games between friends.
-- 👥 **Friend Management System**: Search for users, send requests, and manage your network.
-- ⚡ **Socket.IO Integration**: Instantaneous gameplay and real-time status updates.
-- 🔐 **Secure Authentication**: JWT sessions, bcrypt hashing, and OTP-based email verification.
-- 📊 **Stat Tracking**: Automated tracking of your wins, losses, draws, and total games.
-- 📜 **Game History**: Games history tracking features.
-- 🛡️ **Robust Security**: Rate limiting, Helmet HTTP headers, and strict payload controls.
+-  **Live Multiplayer Chess**: Real-time board synchronization and move validation.
+-  **Custom Games**: Custom games between friends.
+-  **Friend Management System**: Search for users, send requests, and manage your network.
+-  **Socket.IO Integration**: Instantaneous gameplay and real-time status updates.
+-  **Secure Authentication**: JWT sessions, bcrypt hashing, and OTP-based email verification.
+-  **Stat Tracking**: Automated tracking of your wins, losses, draws, and total games.
+-  **Game History**: Games history tracking features.
+-  **Robust Security**: Rate limiting, Helmet HTTP headers, and strict payload controls.
 
 ---
 
-# 🛠️ Tech Stack
+#  Tech Stack
 **A full-stack MERN + Socket.IO chess application featuring live matchmaking, secure private accounts, integrated friend networks, and real-time game state synchronization.**
 <p>
   <img src="https://skillicons.dev/icons?i=react,html,css,javascript,nodejs,express,mongodb,vite" />
@@ -59,7 +59,7 @@
 - **cookie-parser**
 ---
 
-# 📁 Architecture Overview
+#  Architecture Overview
 
 > **`client/`**
 > The frontend React application built with Vite. It contains all the interactive UI components, Zustand global state stores, and the Socket.io client logic for real-time gameplay.
@@ -69,7 +69,7 @@
 
 ---
 
-# 🚀 Getting Started
+#  Getting Started
 
 Follow these steps to get a local instance of ChessMatr up and running on your machine.
 
